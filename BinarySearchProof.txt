@@ -1,0 +1,40 @@
+Binary search proof
+
+Z=integers
+E=any in set (E/)= not in set
+
+Prove (C): for any given xEZ and a sorted array A of ints, Binary sdearch of (A,x) returns YES if xEA and returns NO if XE/A
+
+Fix any arbitrary xEZ.
+Prove any Binary Search(A,x) works as described
+Induct on length of A.
+let n=length(A)
+
+Base Case n=1 (Because binary search takes care of n=1) separately
+	True! xEA if and only if A[1]=x (because A has only 1 element)
+	Line 5 of algo checks if A[1]=x and we return true if it is and otherwise return false
+	
+Inductive Hypothesis: Fix kEN
+	(C) is correct for all nE{1,2,...,k}
+
+Inductive Step: Need to prove (C) is correct for n=k+1
+				k+1 is also known as k' (k-prime)
+				
+	Consider array A size k+1
+	Prove BinSearch (A,x) works correctly
+	
+	
+	m = floor((k+1)/2) = floor(k'/2) >= 1
+	CaseI: if x=A[m], xEA so we correctly return true in line 12
+	CaseII: x < A[m]
+			since A is sorted, x cannot be in A[m+1:n]
+			if xEA, then xEA[1:m] 
+			else if xE/A, then xE/A[1:m]
+			we return BinSearch(A[1:m],x)
+			By IH, BinSearch(A[1:m],x) works correctly since A[1:m] has size floor((k+1)/2)<=k
+			Therefore, we correctly return where xEA or not (since xEA)
+			
+	A[m+1:n]=(A[m+1],A[m+2],...A[n])
+	Length = n-m = k+=1 - floor((k+1)/2)
+			
+
