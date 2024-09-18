@@ -4,6 +4,8 @@ import numpy as np
 
 
 def linear_search(A:list, x:int)->bool:
+    if len(A)==0:
+        return False
     for i in range(len(A)):
         if A[i]==x:
             return True
@@ -11,6 +13,8 @@ def linear_search(A:list, x:int)->bool:
 
 
 def binary_search(A:list, x:int)->bool:
+    if len(A)==0:
+        return False
     left = 0
     right = len(A)-1
     while left <= right:
@@ -24,30 +28,40 @@ def binary_search(A:list, x:int)->bool:
 
     return False
 
-def test_sorted_sequences()->dict:
-    runtimes = {}
+def test_sorted_sequences()->list:
+    line_lengths = []
+    lin_runtimes = []
+    bin_runtimes = []
     with open("sequences_output.txt", "a") as outfile:
         with open("sorted_sequences.txt", "r") as file:
+            i=0
             for line in file:
                 line = [int(x) for x in line.split()]
-                lin_start_time = time.time()
+                lin_start_time = time.perf_counter()
                 lin_result = linear_search(line, 500)
-                lin_end_time = time.time()
-                bin_start_time = time.time()
+                lin_end_time = time.perf_counter()
+                bin_start_time = time.perf_counter()
                 bin_result = binary_search(line, 500)
-                bin_end_time = time.time()
+                bin_end_time = time.perf_counter()
                 outfile.write(str(lin_result) + " " + str(bin_result) + "\n")
-                runtimes[len(line)] = (lin_end_time-lin_start_time, bin_end_time-bin_start_time)
-    return runtimes
+                line_lengths.append(len(line))
+                lin_runtimes.append(lin_end_time-lin_start_time)
+                bin_runtimes.append(bin_end_time-bin_start_time)
+                i += 1
+    return [line_lengths, lin_runtimes, bin_runtimes]
     
 def plot_times():
-    runtimes = test_sorted_sequences()
-    x = np.array(runtimes.keys())
-    y = np.array(runtimes.values())
-    plt.plot(x, y)
+    [line_lengths, lin_runtimes, bin_runtimes] = test_sorted_sequences()
+    p1 = plt.plot(np.array(line_lengths), np.array(lin_runtimes), label="Linear Runtimes")
+    p2 = plt.plot(np.array(line_lengths), np.array(bin_runtimes), label="Binary Runtimes")
+    plt.legend(loc="upper left", title="Time Complexity of Algorithms")
+    
+
     plt.show()
             
-plot_times()
+
+if __name__=="__main__":
+    plot_times()
 
 
 
