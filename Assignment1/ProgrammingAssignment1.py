@@ -1,3 +1,7 @@
+#############################################################################################################################################################
+####################################### CELIA HOUGH AND KATELYNN ATKINSON WORKED ON THIS PROGRAM ALONE ######################################################
+############################################################################################################################################################
+
 import time
 import matplotlib.pyplot as plt
 import numpy as np
@@ -32,7 +36,7 @@ def test_sorted_sequences()->list:
     line_lengths = []
     lin_runtimes = []
     bin_runtimes = []
-    with open("sequences_output.txt", "a") as outfile:
+    with open("sequences_output.txt", "w") as outfile:
         with open("sorted_sequences.txt", "r") as file:
             i=0
             for line in file:
