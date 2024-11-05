@@ -6,9 +6,45 @@ import numpy as np
 import sys
 
 
+def merge_sort(A):
+    n = len(A)
+    if n == 1:
+        return A 
+    mid = n //2
+    L = merge_sort(A[0:mid])
+    R = merge_sort(A[mid+1:n])
+    return merge(L, R)
+
+def merge(A, B):
+    p = len(A)
+    q = len(B)
+    C = [None]*(p+q)
+    i, j, k = 0, 0, 0
+
+    while (i < p) and (j < q):
+        if A[i] < B[j]:
+            C[k] = A[i]
+            i += 1
+        else:
+            C[k] = B[j]
+            j += 1
+        k += 1
+    
+    if i > p:
+        C[k:p+q] = B[j:q]
+    else:
+        C[k:p+q] = A[i:p]
+    return C
+
+def quicksort_lomuto(A):
+    pass
+
+def quicksort_hoare(A):
+    pass
+
 # Runs the three algo
 def test_sort_sequences()->list:
-    sys.setrecursionlimit(1200)
+    sys.setrecursionlimit(2000)
     line_lengths = []
     ms_runtimes = []
     qslomuto_runtimes = []
@@ -59,7 +95,11 @@ def plot_times():
     plt.legend(loc="upper left", title="Time Complexity of Algorithms")
 
     plt.show()
-            
+
+
+def debug():
+    print(merge_sort([3, 1, 5,6, 7, 2,1]))
 
 if __name__=="__main__":
-    plot_times()
+    debug()
+    #plot_times()
