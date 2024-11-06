@@ -5,13 +5,61 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sys
 
+def quicksort_lomuto(array, low, high):
+    if low < high:
+        sec = lomuto(array, low, high)
+        quicksort_lomuto(array, low, sec - 1)
+        quicksort_lomuto(array, sec + 1, high)
+
+
+def quicksort_hoare(array, low, high):
+
+    if low < high:
+        sec = hoare(array, low, high)
+        quicksort_hoare(array, low, sec - 1)
+        quicksort_hoare(array, sec + 1, high)
+
+
+def lomuto(array, low, high):
+
+    p = array[low]
+    s = low
+
+    for i in range(low + 1, high + 1):
+        if array[i] < p:
+            s = s + 1
+            array[s], array[i] = array[i], array[s]
+    array[low], array[s] = array[s], array[low]
+    return s
+
+
+def hoare(array, low, high):
+
+    p = array[low]
+    i = low
+    j = high + 1
+
+    while True:
+
+        i = i + 1
+        while i <= high and array[i] < p:
+            i = i + 1
+        j = j - 1
+        while j >= low and array[j] > p:
+            j = j - 1
+        if i >= j:
+            array[low], array[j] = array[j], array[low]
+            return j
+
+        array[i], array[j] = array[j], array[i]
+
 
 def merge_sort(A):
     n = len(A)
     if n == 1:
         return A 
     mid = n //2
-    L = merge_sort(A[0:mid])
+    L = merge_sort(A[0:mid-1])
     R = merge_sort(A[mid+1:n])
     return merge(L, R)
 
@@ -97,9 +145,6 @@ def plot_times():
     plt.show()
 
 
-def debug():
-    print(merge_sort([3, 1, 5,6, 7, 2,1]))
 
 if __name__=="__main__":
-    debug()
-    #plot_times()
+    plot_times()
