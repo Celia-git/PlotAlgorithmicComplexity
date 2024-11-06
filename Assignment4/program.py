@@ -10,7 +10,7 @@ def quicksort_lomuto(array, low, high):
         sec = lomuto(array, low, high)
         quicksort_lomuto(array, low, sec - 1)
         quicksort_lomuto(array, sec + 1, high)
-
+    return array
 
 def quicksort_hoare(array, low, high):
 
@@ -18,7 +18,7 @@ def quicksort_hoare(array, low, high):
         sec = hoare(array, low, high)
         quicksort_hoare(array, low, sec - 1)
         quicksort_hoare(array, sec + 1, high)
-
+    return array
 
 def lomuto(array, low, high):
 
@@ -59,8 +59,8 @@ def merge_sort(A):
     if n == 1:
         return A 
     mid = n //2
-    L = merge_sort(A[0:mid-1])
-    R = merge_sort(A[mid+1:n])
+    L = merge_sort(A[0:mid])
+    R = merge_sort(A[mid:n])
     return merge(L, R)
 
 def merge(A, B):
@@ -84,11 +84,6 @@ def merge(A, B):
         C[k:p+q] = A[i:p]
     return C
 
-def quicksort_lomuto(A):
-    pass
-
-def quicksort_hoare(A):
-    pass
 
 # Runs the three algo
 def test_sort_sequences()->list:
@@ -103,31 +98,31 @@ def test_sort_sequences()->list:
             for line in file:
                 line_lengths.append(len(line))
                 line = [int(x) for x in line.split()]
-                lin_start_time = time.perf_counter()
-                lin_result = str(merge_sort(line))
-                lin_end_time = time.perf_counter()
-                outfile.write(lin_result)
-                ms_runtimes.append(lin_end_time-lin_start_time)
+                merge_start_time = time.perf_counter()
+                merge_result = str(merge_sort(line))
+                merge_end_time = time.perf_counter()
+                outfile.write(str(merge_result))
+                ms_runtimes.append(merge_end_time-merge_start_time)
 
     with open(array_outputs[1], "w") as outfile:
         with open("unsorted_sequences.txt", "r") as file:
             for line in file:
                 line = [int(x) for x in line.split()]
-                bin_start_time = time.perf_counter()
-                bin_result = str(quicksort_lomuto(line))
-                bin_end_time = time.perf_counter()
-                outfile.write(bin_result)
-                qslomuto_runtimes.append(bin_end_time-bin_start_time)
+                lomuto_start_time = time.perf_counter()
+                lomuto_result = str(quicksort_lomuto(line, 0, len(line)-1))
+                lomuto_end_time = time.perf_counter()
+                outfile.write(str(lomuto_result))
+                qslomuto_runtimes.append(lomuto_end_time-lomuto_start_time)
     
     with open(array_outputs[2], "w") as outfile:
         with open("unsorted_sequences.txt", "r") as file:
             for line in file:
                 line = [int(x) for x in line.split()]
-                doub_start_time = time.perf_counter()
-                doub_result = quicksort_hoare(line)
-                doub_end_time = time.perf_counter()
-                outfile.write(doub_result)
-                qshoare_runtimes.append(doub_end_time-doub_start_time)
+                hoare_start_time = time.perf_counter()
+                hoare_result = quicksort_hoare(line, 0, len(line)-1)
+                hoare_end_time = time.perf_counter()
+                outfile.write(str(hoare_result))
+                qshoare_runtimes.append(hoare_end_time-hoare_start_time)
     
     with open("runtimes.txt", "w") as outfile:
         for i in range(len(qslomuto_runtimes)):
